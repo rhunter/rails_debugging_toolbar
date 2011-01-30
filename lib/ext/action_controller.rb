@@ -1,10 +1,10 @@
 
 class ActionController::Base
   private
-  def initialize_template_class_with_debugging_toolbar_support(response)
-    initialize_template_class_without_debugging_toolbar_support(response)
-    response.template.extend(RailsDebuggingToolbar::Extensions::ActionView)
+  def assign_shortcuts_with_debugging_toolbar_support(request, response)
+    assign_shortcuts_without_debugging_toolbar_support(request, response)
+    response.template.extend(RailsDebuggingToolbar::Extensions::ActionView) if request.parameters[:debug] == "render"
   end
-  alias_method_chain :initialize_template_class, :debugging_toolbar_support
+  alias_method_chain :assign_shortcuts, :debugging_toolbar_support
 end
 
