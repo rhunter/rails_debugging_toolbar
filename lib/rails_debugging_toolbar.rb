@@ -187,7 +187,6 @@ module RailsDebuggingToolbar
 
       def my_render_depth
         @some_render_depth ||= 0
-        @some_render_depth.tap {|x| puts "Render depth is #{x}"}
       end
 
       def at_outer_level_render?
