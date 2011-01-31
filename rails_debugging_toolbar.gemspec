@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "rails-debugging-toolbar/version"
+require "rails_debugging_toolbar/version"
 
 Gem::Specification.new do |s|
-  s.name        = "rails-debugging-toolbar"
+  s.name        = "rails_debugging_toolbar"
   s.version     = RailsDebuggingToolbar::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Rob Hunter"]
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Use your browser to find which template rendered some HTML}
   s.description = %q{This tool helps you dig deeper through the Rails rendering stack using just your browser.}
 
-  s.rubyforge_project = "rails-debugging-toolbar"
+  s.rubyforge_project = "rails_debugging_toolbar"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
