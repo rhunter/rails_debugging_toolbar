@@ -148,7 +148,14 @@ module RailsDebuggingToolbar
             }
           </style>
           
-          <script type="text/javascript">
+          <script type="text/javascript">//<![CDATA
+          // Load JQuery if it's not already present
+          if (typeof(jQuery) === 'undefined') {
+            document.write('<scr' + 'ipt type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></scr' + 'ipt>');
+          }
+          // ]>
+          </script>
+          <script type="text/javascript">//<![CDATA
           (function ($) {
             $(function() {
               var checkbox = $("input#enable-debug-detail-checkbox");
@@ -170,6 +177,7 @@ module RailsDebuggingToolbar
               });
             });
           })(jQuery);
+          //]>
           </script>
         HTML
         actual_output.sub("</body>", debug_log + "</body>".html_safe!)
