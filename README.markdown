@@ -55,7 +55,7 @@ For example, if you are interested in the page:
 
 You can try the toolbar by visiting the following:
 
-    http://localhost:3000/examples/new?debug=render
+    http://localhost:3000/examples/new?template_debug
 
 When the toolbar is enabled, you should see a little debugging checkbox overlaid
 on top of the normal page. Switch it on, and then everything you point at should
