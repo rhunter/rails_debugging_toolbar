@@ -59,22 +59,12 @@ module RailsDebuggingToolbar
                 <h3><label for="render-debug-wrapper-<%= h id %>"><code><%= h partial %></code></label></h3>
                 <% if locals.any? %>
                   <h4><label for="render-debug-locals-<%= h id %>">Locals</label></h4>
-                  <dl>
-                    <% locals.each_pair do |local_name, local_value| %>
-                      <dt><%= h local_name %></dt>
-                      <dd><code><%= h local_value.inspect %></code></dd>
-                    <% end %>
-                  </dl>
+                  <%= print_hash_as_html_for_debugging(locals) %>
                 <% end %>
 
                 <% if unrecognized_options.any? %>
                   <h4><label for="render-debug-options-<%= h id %>">Other options</label></h4>
-                  <dl>
-                    <% unrecognized_options.each_pair do |option_name, option_value| %>
-                      <dt><%= h option_name %></dt>
-                      <dd><%= h option_value.inspect %></dd>
-                    <% end %>
-                  </dl>
+                  <%= print_hash_as_html_for_debugging(unrecognized_options) %>
                 <% end %>
               </div>
             <% end %>
@@ -206,6 +196,25 @@ module RailsDebuggingToolbar
       def recorded_render_details
         @recorded_render_details ||= {}
       end
+      
+      def print_as_html_for_debugging(subject)
+        return h subject.relative_path if subject.respond_to? :relative_path
+        return h subject.path if subject.respond_to? :path
+        return print_as_html_for_debugging if subject.respond_to? :each_pair
+        ERB.new("<code><%= subject.inspect %></code").result(binding)
+      end
+      
+      def print_hash_as_html_for_debugging(hsh)
+        ERB.new(<<-HTML).result(binding)
+          <dl>
+            <% hsh.each_pair do |key, value| %>
+              <dt><%= h key %></dt>
+              <dd><%= print_as_html_for_debugging(value) %></code></dd>
+            <% end %>
+          </dl>
+        HTML
+      end
+
     end
   end
 end
