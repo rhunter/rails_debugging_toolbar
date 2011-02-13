@@ -73,11 +73,11 @@ module RailsDebuggingToolbar
               </div>
             <% end %>
           </div>
-          <form action="#" class="render-debug debug-show">
-            <input type="checkbox" id="enable-debug-detail-checkbox" name="render" value="debug" />
-            <label for="enable-debug-detail-checkbox">Show rendering details</label>
-            <input type="checkbox" id="debug-follows-cursor-checkbox" name="follow_cursor" value="yes" />
-            <label for="debug-follows-cursor-checkbox">Show rendering details</label>
+          <form action="#" class="render-debug" id="debug-show">
+            <input type="checkbox" id="enable-debug-detail-checkbox" name="render" value="debug" accesskey="r" />
+            <label for="enable-debug-detail-checkbox">Show rendering details (<kbd>r</kbd)>)</label>
+            <input type="checkbox" id="debug-follows-cursor-checkbox" name="follow_cursor" checked="checked" accesskey="f" />
+            <label for="debug-follows-cursor-checkbox">Debug follows cursor (<kbd>f</kbd)>)</label>
           </form>
           <style type="text/css">
             #debug-log {
@@ -87,11 +87,15 @@ module RailsDebuggingToolbar
               text-align: left;
               color: #ccc;
               border: none;
+              overflow: hidden;
+              height: 4px; /* just enough to know it's there */
             }
             #debug-log.active {
               display: block; position: fixed; top: 0px; right: 0px; top: 0px; width: 300px; z-index: 1000;
               background: black; opacity: 0.8;
               border: thin solid white;
+              overflow: auto;
+              height: 100%;
             }
             #debug-log .render-detail {
               display: none;
@@ -134,19 +138,14 @@ module RailsDebuggingToolbar
               display: block;
               margin-left: 0px;
               font-weight: bold;
-              float: left;
-              width: 8em;
-              word-break: break-all;
-              overflow: hidden;
             }
             #debug-log dd {
               display: block;
               margin-left: 2px;
               max-height: 4ex;
-              overflow: hidden;
             }
-            form.debug-show {
-              display: block; position: fixed; bottom: 0px; left: 0px; width: 100px; z-index: 1000;
+            form#debug-show {
+              display: block; position: fixed; bottom: 0px; left: 0px; width: 30em; z-index: 1000;
               background: black; opacity: 1.0;
               border: thin solid white;
             }
@@ -162,23 +161,37 @@ module RailsDebuggingToolbar
           <script type="text/javascript">//<![CDATA
           (function ($) {
             $(function() {
-              var checkbox = $("input#enable-debug-detail-checkbox");
+              var show_bar_checkbox = $("input#enable-debug-detail-checkbox");
+              var follow_cursor_checkbox = $("input#debug-follows-cursor-checkbox");
+              var should_follow_cursor = $(follow_cursor_checkbox).is(':checked');
               
-              checkbox.change(function() {
-                if ($(this).is(':checked')) {
+              show_bar_checkbox.change(function() {
+                if ($(show_bar_checkbox).is(':checked')) {
                   $("#debug-log").addClass("active");
-                  $(".render-debug.partial").hover(function() {
-                    var detail_div = $("label[for=" + this.id + "]").parents("#debug-log .render-detail");
-                    detail_div.addClass("active");
-                  }, function() {
-                    var detail_div = $("label[for=" + this.id + "]").parents("#debug-log .render-detail");
-                    detail_div.removeClass("active");
-                  });
                 } else {
                   $("#debug-log").removeClass("active");
                   $(".render-debug.partial").unbind();
                 }
               });
+              follow_cursor_checkbox.change(function() {
+                should_follow_cursor = $(follow_cursor_checkbox).is(':checked');
+                if (should_follow_cursor) {
+                  // a clean slate for mousing around
+                  $("#debug-log .render-detail.active").removeClass("active");
+                }
+              });
+              $(".render-debug.partial").hover(function() {
+                if (!should_follow_cursor) { return true; }
+                
+                var detail_div = $("label[for=" + this.id + "]").parents("#debug-log .render-detail");
+                detail_div.addClass("active");
+              }, function() {
+                if (!should_follow_cursor) { return true; }
+                
+                var detail_div = $("label[for=" + this.id + "]").parents("#debug-log .render-detail");
+                detail_div.removeClass("active");
+              });
+              
             });
           })(jQuery);
           //]>
