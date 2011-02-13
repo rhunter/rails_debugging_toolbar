@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails_debugging_toolbar (0.0.1)
+    rails_debugging_toolbar (0.0.3)
       actionpack (>= 2.3.5)
 
 GEM
