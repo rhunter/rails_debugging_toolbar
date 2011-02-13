@@ -66,8 +66,8 @@ where the view is.
 
 
 # Dependencies
-The Rails Debugging Toolbar works with Rails 2.3.5 for sure -- other versions
-might work but I've only tried 2.3.5.
+The Rails Debugging Toolbar works with Rails 2.3.5 for sure, and it should
+work with Rails 3.0.0 as well.
 
 The toolbar also needs jQuery to do its job, and will load jQuery automatically
 if it's not already on the page. One day I would like to make the toolbar work

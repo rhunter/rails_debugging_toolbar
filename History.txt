@@ -6,6 +6,7 @@
   rather than just failing.
 
 === New features
+* Works with Rails 3.0 as well as Rails 2.3
 * Better variable inspection -- hashes should show up in table-like things.
 * You can turn off debug-follows-pointer and scroll around the detail
 
