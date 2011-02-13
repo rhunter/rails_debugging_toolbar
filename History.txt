@@ -1,4 +1,4 @@
-== 0.0.3 (development)
+== 0.0.3 (2011-02-14)
 === Bugfixes
 * The rendering output should stay inside HTML <body> tags, so
   as not to trigger quirks mode rendering or any other weirdness.
@@ -9,6 +9,8 @@
 * Works with Rails 3.0 as well as Rails 2.3
 * Better variable inspection -- hashes should show up in table-like things.
 * You can turn off debug-follows-pointer and scroll around the detail
+
+
 
 == 0.0.2 (2011-01-31)
 
