@@ -92,7 +92,8 @@ module RailsDebuggingToolbar
             }
             #debug-log.active {
               display: block; position: fixed; top: 0px; right: 0px; top: 0px; width: 300px; z-index: 1000;
-              background: black; opacity: 0.8;
+              background: rgba(0,0,0,0.8);
+              color: #ccc;
               border: thin solid white;
               overflow: auto;
               height: 100%;
@@ -146,7 +147,8 @@ module RailsDebuggingToolbar
             }
             form#debug-show {
               display: block; position: fixed; bottom: 0px; left: 0px; width: 30em; z-index: 1000;
-              background: black; opacity: 1.0;
+              background: rgba(0,0,0,1.0);
+              color: #ccc;
               border: thin solid white;
             }
           </style>
