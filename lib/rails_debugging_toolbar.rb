@@ -201,7 +201,7 @@ module RailsDebuggingToolbar
         return h subject.relative_path if subject.respond_to? :relative_path
         return h subject.path if subject.respond_to? :path
         return print_as_html_for_debugging if subject.respond_to? :each_pair
-        ERB.new("<code><%= subject.inspect %></code").result(binding)
+        ERB.new("<code><%= h subject.inspect %></code>").result(binding)
       end
       
       def print_hash_as_html_for_debugging(hsh)
