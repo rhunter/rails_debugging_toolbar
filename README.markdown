@@ -65,6 +65,14 @@ Simply point at the element you're interested in, and the panel will tell you
 where the view is.
 
 
+# Dependencies
+The Rails Debugging Toolbar works with Rails 2.3.5 for sure -- other versions
+might work but I've only tried 2.3.5.
+
+The toolbar also needs jQuery to do its job, and will load jQuery automatically
+if it's not already on the page. One day I would like to make the toolbar work
+with no external dependencies but right now I'm happy with jQuery.
+
 
 [1]: http://drupal.org/project/devel_themer
 [2]: https://github.com/robhudson/django-debug-toolbar

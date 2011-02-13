@@ -1,3 +1,13 @@
+== 0.0.3 (development)
+=== Bugfixes
+* The rendering output should stay inside HTML <body> tags, so
+  as not to trigger quirks mode rendering or any other weirdness.
+* jQuery is loaded automatically in case it's not already present,
+  rather than just failing.
+
+=== New features
+* Better variable inspection -- hashes should show up in table-like things.
+* You can turn off debug-follows-pointer and scroll around the detail
 
 == 0.0.2 (2011-01-31)
 
