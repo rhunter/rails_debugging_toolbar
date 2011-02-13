@@ -1,6 +1,14 @@
 require 'sha1'
 module RailsDebuggingToolbar
   module Extensions
+    module ActionController
+      def view_context
+        returning(super) do |view|
+          extension_module = ::RailsDebuggingToolbar::Extensions::ActionView
+          view.extend(extension_module) unless view.kind_of? extension_module
+        end
+      end
+    end
     module ActionView
       def render(options = {}, local_assigns = {}, &block)
         actual_output = super(options, local_assigns, &block)
