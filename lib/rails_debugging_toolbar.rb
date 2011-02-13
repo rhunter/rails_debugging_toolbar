@@ -1,3 +1,4 @@
+require 'sha1'
 require 'ext/action_controller'
 module RailsDebuggingToolbar
   module Extensions
@@ -6,11 +7,9 @@ module RailsDebuggingToolbar
         actual_output = super(options, local_assigns, &block)
         id = next_available_render_id
 
-        on_entering_render
         record_render_details(id, options, local_assigns)
-        on_leaving_render
 
-        return debug_log_after_body(actual_output) if at_outer_level_render?
+        return debug_log_after_body(actual_output) if actual_output.include? "</body>"
 
         wrapped_output(actual_output, id)
       end
@@ -36,14 +35,19 @@ module RailsDebuggingToolbar
       end
 
       def wrapped_output(actual_output, id)
-        ERB.new(<<-HTML).result(binding)
-          <span class='render-debug partial' id='render-debug-wrapper-<%= h id %>'>
-            <%= actual_output %>
-          </span>
-        HTML
+        open_wrapping = "<span class='render-debug partial' id='render-debug-wrapper-#{ h id}'>".html_safe!
+        close_wrapping = "</span>".html_safe!
+        
+        # insert the wrapping spans, but staying inside any <body> / </body>
+        output_with_open_wrapping = actual_output.rpartition(/<body\b.*?>/).insert(2, open_wrapping).join
+        output_with_both_wrapping = output_with_open_wrapping.partition('</body>').insert(1, close_wrapping).join
+        
+        # open_wrapping + actual_output + close_wrapping
       end
 
       def debug_log_after_body(actual_output)
+        return actual_output if @debug_log_rendered
+        
         debug_log = ERB.new(<<-HTML).result(binding)
           <div class='render-debug' id='debug-log'>
             <% recorded_render_details.each_pair do |id, stuff| %>
@@ -180,7 +184,9 @@ module RailsDebuggingToolbar
           //]>
           </script>
         HTML
-        actual_output.sub("</body>", debug_log + "</body>".html_safe!)
+        output_with_debug_log = actual_output.sub("</body>", debug_log + "</body>".html_safe!)
+        @debug_log_rendered = true
+        output_with_debug_log
       end
 
       def my_render_depth
