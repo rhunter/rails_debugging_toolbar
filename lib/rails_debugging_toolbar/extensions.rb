@@ -42,18 +42,20 @@ module RailsDebuggingToolbar
       end
 
       def wrapped_output(actual_output, id)
-        open_wrapping = "<span class='render-debug partial' id='render-debug-wrapper-#{ h id}'>".html_safe!
-        close_wrapping = "</span>".html_safe!
+        open_wrapping = raw("<span class='render-debug partial' id='render-debug-wrapper-#{ h id}'>")
+        close_wrapping = raw("</span>")
         
         # insert the wrapping spans, but staying inside any <body> / </body>
         output_with_open_wrapping = actual_output.rpartition(/<body\b.*?>/).insert(2, open_wrapping).join
         output_with_both_wrapping = output_with_open_wrapping.partition('</body>').insert(1, close_wrapping).join
         
         # open_wrapping + actual_output + close_wrapping
+        raw(output_with_both_wrapping)
       end
 
       def debug_log_after_body(actual_output)
-        return actual_output if @debug_log_rendered
+        puts "%%%%%%%%%%%%% Rendering debug log"
+        puts caller
         
         debug_log = ERB.new(<<-HTML).result(binding)
           <div class='render-debug' id='debug-log'>
@@ -204,7 +206,7 @@ module RailsDebuggingToolbar
           //]>
           </script>
         HTML
-        output_with_debug_log = actual_output.sub("</body>", debug_log + "</body>".html_safe!)
+        output_with_debug_log = actual_output.sub("</body>", debug_log + raw("</body>"))
         @debug_log_rendered = true
         output_with_debug_log
       end
