@@ -54,9 +54,6 @@ module RailsDebuggingToolbar
       end
 
       def debug_log_after_body(actual_output)
-        puts "%%%%%%%%%%%%% Rendering debug log"
-        puts caller
-        
         debug_log = ERB.new(<<-HTML).result(binding)
           <div class='render-debug' id='debug-log'>
             <% recorded_render_details.each_pair do |id, stuff| %>
